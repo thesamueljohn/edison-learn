@@ -1,17 +1,15 @@
 import { useFetcher } from "@/hook/useFetcher";
 import { supabase } from "@/lib/supabase";
+import { UserProfile } from "@/types/profile";
+import { useUser } from "@clerk/nextjs";
 import { ChevronRight, MedalIcon } from "lucide-react";
 import Link from "next/link";
 import { useCallback } from "react";
 
-type UserProfile = {
-  id: string;
-  full_name: string | null;
-  avatar_url: string | null;
-  xp: number | null;
-};
+
 
 const LeaderBoardCard = ({ sliceBy }: { sliceBy: number }) => {
+  const { user : currentUser } = useUser()
   const fetchUsers = useCallback(async () => {
     let { data: profiles, error } = await supabase
       .from("profiles")
@@ -25,6 +23,12 @@ const LeaderBoardCard = ({ sliceBy }: { sliceBy: number }) => {
   }, []);
 
   const { data: users, isPending, error } = useFetcher(fetchUsers);
+
+  const me = users?.find((user) => user.clerk_id === currentUser?.id);
+  let LearderBoardUsers = users?.filter((user) => user.clerk_id !== currentUser?.id);
+  if (me) {
+    LearderBoardUsers = [me, ...LearderBoardUsers!].sort((a, b) => (b.xp || 0) - (a.xp || 0));
+  }
   return (
     <div className="bg-white rounded-3xl border-2 border-gray-200 p-6">
       <h3 className="font-black text-xl text-gray-700">
@@ -67,11 +71,11 @@ const LeaderBoardCard = ({ sliceBy }: { sliceBy: number }) => {
           ))}
 
         {!isPending &&
-          users &&
-          users.slice(0, sliceBy ? sliceBy : 5).map((user, index) => (
+          LearderBoardUsers &&
+          LearderBoardUsers.slice(0, sliceBy ? sliceBy : 5).map((user, index) => (
             <div
               key={user.id}
-              className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50"
+              className={`flex items-center gap-3 py-2 px-4 rounded-xl hover:bg-gray-50 ${user.clerk_id === currentUser?.id ? 'bg-yellow-100' : ''}`}
             >
               <span
                 className={`font-black w-6 ${
