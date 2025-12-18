@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 
-
 import "./globals.css";
 import { ProfileProvider } from "@/context/ProfileContext";
 
@@ -32,11 +31,9 @@ export default function RootLayout({
         <body
           className={`${bricolage.variable} antialiased flex flex-col min-h-screen`}
         >
-          
           <main className="flex-1">
             <ProfileProvider>{children}</ProfileProvider>
           </main>
-          
         </body>
       </html>
     </ClerkProvider>
