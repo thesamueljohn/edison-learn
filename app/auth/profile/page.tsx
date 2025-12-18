@@ -25,23 +25,13 @@ import {
 import { useUser } from "@clerk/nextjs";
 import { supabase } from "@/lib/supabase";
 import { useFetcher } from "@/hook/useFetcher";
+import { UserProfile } from "@/types/profile";
 
 // 2. Initialize Edison Font
 const nunito = Nunito({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
 });
-
-interface ProfileData {
-  id: string;
-  clerk_id: string;
-  email: string;
-  full_name: string | null;
-  avatar_url: string | null;
-  class_id: string | null;
-  role: "student" | "teacher" | "parent";
-  created_at: string;
-}
 
 interface ProgressStats {
   totalTopics: number;
@@ -63,7 +53,7 @@ export default function Profile() {
   const [isUpdating, setIsUpdating] = useState(false);
 
   // Fetch user profile data
-  const fetchProfile: () => Promise<ProfileData> = useCallback(async () => {
+  const fetchProfile: () => Promise<UserProfile> = useCallback(async () => {
     if (!clerkUser?.id) throw new Error("User not authenticated");
 
     const { data, error } = await supabase
@@ -76,7 +66,7 @@ export default function Profile() {
     return data;
   }, [clerkUser?.id]);
 
-  const { data: profile, isPending: profileLoading } = useFetcher<ProfileData>(
+  const { data: profile, isPending: profileLoading } = useFetcher<UserProfile>(
     fetchProfile,
     {
       enabled: !!clerkUser?.id,
@@ -392,7 +382,7 @@ export default function Profile() {
                   <Zap className="w-8 h-8 text-white" fill="currentColor" />
                 </div>
                 <p className="font-black text-gray-700 text-xl">
-                  {progressStats?.totalStudyTime || 0}
+                  {profile?.xp || 0}
                 </p>
                 <p className="text-xs font-bold text-gray-400 uppercase">XP</p>
               </div>

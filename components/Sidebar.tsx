@@ -14,6 +14,7 @@ import {
   User,
   Mic,
   Dumbbell,
+  ArrowLeftCircle,
 } from "lucide-react";
 import { NavItem } from "@/components/ui/dashboard-subcomponents";
 
@@ -37,20 +38,20 @@ const Sidebar = () => {
         <nav className="flex-1 space-y-2">
           <NavItem
             href="/auth/dashboard"
-            icon={<Book size={28} />}
-            label="Learn"
-            isActive={activeTab === "learn"}
-            onClick={() => setActiveTab("learn")}
+            icon={<ArrowLeftCircle />}
+            label="Dashboard"
+            isActive={activeTab === "Dashboard"}
+            onClick={() => setActiveTab("Dashboard")}
           />
-          <NavItem
+          {/* <NavItem
             href="/auth/voice-ai"
             icon={<Mic size={28} />}
             label="Voice Chat AI"
             isActive={activeTab === "voice"}
             onClick={() => setActiveTab("voice")}
             badge="NEW"
-          />
-          <NavItem
+          /> */}
+          {/* <NavItem
             href="/auth/practice"
             icon={<Dumbbell size={28} />}
             label="Practice"
@@ -77,7 +78,7 @@ const Sidebar = () => {
             label="Leaderboard"
             isActive={activeTab === "leaderboard"}
             onClick={() => setActiveTab("leaderboard")}
-          />
+          /> */}
           <NavItem
             href="/auth/profile"
             icon={<User size={28} />}
