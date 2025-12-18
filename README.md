@@ -153,3 +153,7 @@ AI Tutor is built to:
 
 ## License
 This project was developed for an SDG Hackathon and is intended for educational and research purposes.
+
+
+
+
