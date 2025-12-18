@@ -25,6 +25,8 @@ import { Topic } from "@/types/topics";
 import { ThemeColor } from "@/types/theme";
 import { getBgColor, getColorClass } from "@/lib/colors";
 import { redirect } from "next/navigation";
+import { useProfile } from "@/hook/useProfile";
+import LeaderBoardCard from "@/components/LeaderBoardCard";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -38,6 +40,7 @@ const page = ({
 }) => {
   const { courseId, classId } = use(params);
   const { user } = useUser();
+  const {profile} = useProfile();
 
   const fetchTopics: () => Promise<Topic[]> = useCallback(async () => {
     let { data, error } = await supabase
@@ -437,7 +440,7 @@ const page = ({
             <Flame size={24} fill="currentColor" /> 12
           </div>
           <div className="flex items-center gap-2 text-blue-400 font-bold hover:bg-gray-100 px-2 py-1 rounded-xl cursor-pointer">
-            <Zap size={24} fill="currentColor" /> 450
+            <Zap size={24} fill="currentColor" /> {profile?.xp || '--'}
           </div>
           <div className="flex items-center gap-2 text-red-500 font-bold hover:bg-gray-100 px-2 py-1 rounded-xl cursor-pointer">
             <Heart size={24} fill="currentColor" /> 5
@@ -491,37 +494,7 @@ const page = ({
           </div>
         </div>
         {/* Leaderboard Teaser */}
-        <div className="border-2 border-gray-200 rounded-2xl p-4">
-          <h3 className="font-black text-gray-700 text-lg mb-4">
-            Diamond League
-          </h3>
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white font-bold">
-                JD
-              </div>
-              <div className="flex-1">
-                <div className="font-bold text-gray-700">John Doe</div>
-                <div className="text-xs text-gray-400">1200 XP</div>
-              </div>
-              <Trophy
-                size={20}
-                className="text-yellow-400"
-                fill="currentColor"
-              />
-            </div>
-            <div className="flex items-center gap-3 opacity-60">
-              <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
-                SA
-              </div>
-              <div className="flex-1">
-                <div className="font-bold text-gray-700">Sarah A.</div>
-                <div className="text-xs text-gray-400">950 XP</div>
-              </div>
-              <span className="font-bold text-gray-400">#2</span>
-            </div>
-          </div>
-        </div>
+        <LeaderBoardCard sliceBy={2} />
       </aside>
     </div>
   );
