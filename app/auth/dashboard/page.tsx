@@ -26,6 +26,7 @@ import { ThemeColor } from "@/types/theme";
 import { redirect } from "next/navigation";
 import { colors, getBgColor, getColorClass } from "@/lib/colors";
 import LeaderBoardCard from "@/components/LeaderBoardCard";
+import UpdateClass from "@/components/UpdateClass";
 
 // Optimize Font Loading
 const nunito = Nunito({
@@ -217,7 +218,7 @@ export default function Dashboard() {
             <div className="hidden md:flex items-center gap-2 hover:bg-gray-100 px-3 py-2 rounded-2xl cursor-pointer transition-colors border-2 border-transparent hover:border-gray-200">
               <Zap size={24} className="text-[#4854F6] fill-[#4854F6]" />
               <span className="font-extrabold text-[#4854F6]">
-                {profile?.xp || '--'} XP
+                {profile?.xp || 0} XP
               </span>
             </div>
 
@@ -234,7 +235,6 @@ export default function Dashboard() {
                     userButtonAvatarBox: "w-10 h-10 border-2 border-gray-200",
                   },
                 }}
-                afterSignOutUrl="/"
               />
             </div>
           </div>
@@ -408,12 +408,7 @@ export default function Dashboard() {
                     <p className="text-gray-400 mb-6">
                       You don't have any courses assigned to your class yet.
                     </p>
-                    <button
-                      onClick={() => setIsAddCourseModalOpen(true)}
-                      className="px-6 py-3 bg-[#4854F6] text-white font-bold rounded-xl hover:bg-[#3a45d1] transition-colors"
-                    >
-                      Add Course
-                    </button>
+                    <UpdateClass profile={profile} />
                   </div>
                 )}
               </div>
@@ -522,7 +517,7 @@ export default function Dashboard() {
             </div>
 
             {/* Leaderboard Card */}
-            <LeaderBoardCard  sliceBy={5}/>
+            <LeaderBoardCard sliceBy={5} />
 
             {/* Premium Ad (Duolingo Style) */}
             <div className="rounded-3xl p-6 bg-[#101928] text-white text-center relative overflow-hidden border-b-4 border-gray-900">
